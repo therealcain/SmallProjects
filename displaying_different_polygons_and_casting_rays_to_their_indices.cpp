@@ -1,3 +1,5 @@
+// Author: Eviatar Mor, 10/01/2020
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <random>
