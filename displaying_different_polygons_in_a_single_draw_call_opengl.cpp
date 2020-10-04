@@ -1,3 +1,5 @@
+// Author: Eviatar Mor, 10/03/2020
+
 #define GLEW_STATIC
 #include <GL/glew.h>
 
