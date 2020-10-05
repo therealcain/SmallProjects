@@ -260,18 +260,12 @@ struct Quaternion
     // https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles#Quaternion_to_Euler_angles_conversion
     static Quaternion convertFromEuler(const float yaw, const float pitch, const float roll)
     {
-        const float cy = cosf(yaw * 0.5f);
-        const float sy = sinf(yaw * 0.5f);
-        const float cp = cosf(pitch * 0.5f);
-        const float sp = sinf(pitch * 0.5f);
-        const float cr = cosf(roll * 0.5f);
-        const float sr = sinf(roll * 0.5f);
-
         Quaternion q;
-        q.w = cr * cp * cy + sr * sp * sy;
-        q.x = sr * cp * cy - cr * sp * sy;
-        q.y = cr * sp * cy + sr * cp * sy;
-        q.z = cr * cp * sy - sr * sp * cy;
+
+        q.x = sinf(roll / 2) * cosf(pitch / 2) * cosf(yaw / 2) - cosf(roll / 2) * sinf(pitch / 2) * sinf(yaw / 2);
+        q.y = cosf(roll / 2) * sinf(pitch / 2) * cosf(yaw / 2) + sinf(roll / 2) * cosf(pitch / 2) * sinf(yaw / 2);
+        q.z = cosf(roll / 2) * cosf(pitch / 2) * sinf(yaw / 2) - sinf(roll / 2) * sinf(pitch / 2) * cosf(yaw / 2);
+        q.w = cosf(roll / 2) * cosf(pitch / 2) * cosf(yaw / 2) + sinf(roll / 2) * sinf(pitch / 2) * sinf(yaw / 2);
 
         return q;
     }
@@ -480,7 +474,7 @@ int main(int, char**)
             euler_rad[2] = as_radians ? euler[2] : glm::radians(euler[2]);
 
             ImGui::Text("Roll(X), Pitch(Y), Yaw(Z)");
-            ImGui::SliderFloat3("Euler", euler, as_radians ? -3.141f : 0.f, as_radians ? 3.141f : 360.f);
+            ImGui::SliderFloat3("Euler", euler, as_radians ? -3.141f : -180.f, as_radians ? 3.141f : 180.f);
             if(ImGui::IsItemActive())
             {
                 Model = glm::mat4(1.f);
@@ -511,6 +505,13 @@ int main(int, char**)
                 EulerAngle::rotateX(euler[0], Model);
                 EulerAngle::rotateY(euler[1], Model);
                 EulerAngle::rotateZ(euler[2], Model);
+
+                if(!as_radians)
+                {
+                    euler[0] = glm::degrees(converted_euler.x);
+                    euler[1] = glm::degrees(converted_euler.y);
+                    euler[2] = glm::degrees(converted_euler.z);
+                }
             }
 
             ImGui::End();
