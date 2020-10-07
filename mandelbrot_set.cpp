@@ -1,4 +1,4 @@
-// Author: Eviatar Mor, 10/04/2020
+// Author: Eviatar Mor, 04/10/2020
 // The Mandelbrot set was invented in 1980 by the mathematician Benoit Mandelbrot.
 // It's an example of a fractal in mathematics and can be explained by the formula:
 //           2
